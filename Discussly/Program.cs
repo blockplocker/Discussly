@@ -13,7 +13,10 @@ namespace Discussly
 
             builder.Services.AddDbContext<DiscusslyContext>(options => options.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<DiscusslyUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<DiscusslyContext>();
+            builder.Services.AddDefaultIdentity<DiscusslyUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<DiscusslyContext>();
+
+            builder.Services.AddHttpClient();
 
             // Add services to the container.
             builder.Services.AddRazorPages();
