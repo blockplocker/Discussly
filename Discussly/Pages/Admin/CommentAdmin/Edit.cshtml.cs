@@ -1,16 +1,13 @@
-﻿using Discussly.Areas.Identity.Data;
-using Discussly.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
+using Discussly.Models;
 
-namespace Discussly.Pages.Admin.PostAdmin
+namespace Discussly.Pages.Admin.CommentAdmin
 {
     public class EditModel : PageModel
     {
@@ -24,22 +21,22 @@ namespace Discussly.Pages.Admin.PostAdmin
         }
 
         [BindProperty]
-        public Post Post { get; set; } = default!;
+        public Comment Comment { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
                 return NotFound();
 
-            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/api/posts/{id}");
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/api/comments/{id}");
             if (!response.IsSuccessStatusCode)
                 return NotFound();
 
-            var post = await response.Content.ReadFromJsonAsync<Post>();
-            if (post == null)
+            var comment = await response.Content.ReadFromJsonAsync<Comment>();
+            if (comment == null)
                 return NotFound();
 
-            Post = post;
+            Comment = comment;
             return Page();
         }
 
@@ -48,11 +45,14 @@ namespace Discussly.Pages.Admin.PostAdmin
             if (!ModelState.IsValid)
                 return Page();
 
-            var response = await _httpClient.PutAsJsonAsync($"{_apiBaseUrl}/api/posts/{Post.Id}", Post);
+            // Optionally update the UpdatedAt timestamp
+            Comment.UpdatedAt = DateTime.Now;
+
+            var response = await _httpClient.PutAsJsonAsync($"{_apiBaseUrl}/api/comments/{Comment.Id}", Comment);
 
             if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError(string.Empty, "Failed to update post via API.");
+                ModelState.AddModelError(string.Empty, "Failed to update comment via API.");
                 return Page();
             }
 

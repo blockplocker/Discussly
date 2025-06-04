@@ -1,0 +1,78 @@
+﻿@page
+@model Discussly.Pages.Admin.CommentAdmin.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].Upvotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].Downvotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].ParentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment[0].ParentType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Comment) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Upvotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Downvotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentType)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

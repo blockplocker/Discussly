@@ -1,0 +1,70 @@
+﻿@page
+@model Discussly.Pages.Admin.CommentAdmin.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Comment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Comment.Id" />
+            <div class="form-group">
+                <label asp-for="Comment.Content" class="control-label"></label>
+                <input asp-for="Comment.Content" class="form-control" />
+                <span asp-validation-for="Comment.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment.CreatedAt" class="control-label"></label>
+                <input asp-for="Comment.CreatedAt" class="form-control" />
+                <span asp-validation-for="Comment.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment.UpdatedAt" class="control-label"></label>
+                <input asp-for="Comment.UpdatedAt" class="form-control" />
+                <span asp-validation-for="Comment.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment.Upvotes" class="control-label"></label>
+                <input asp-for="Comment.Upvotes" class="form-control" />
+                <span asp-validation-for="Comment.Upvotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment.Downvotes" class="control-label"></label>
+                <input asp-for="Comment.Downvotes" class="form-control" />
+                <span asp-validation-for="Comment.Downvotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment.UserId" class="control-label"></label>
+                <input asp-for="Comment.UserId" class="form-control" />
+                <span asp-validation-for="Comment.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment.ParentId" class="control-label"></label>
+                <input asp-for="Comment.ParentId" class="form-control" />
+                <span asp-validation-for="Comment.ParentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment.ParentType" class="control-label"></label>
+                <select asp-for="Comment.ParentType" class="form-control"></select>
+                <span asp-validation-for="Comment.ParentType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

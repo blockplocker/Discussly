@@ -7,7 +7,7 @@
         public DateTime CreatedAt { get; set; }
         public required string UserId { get; set; }
         public required string ReportedId { get; set; }
-        public required int ReportedType { get; set; } // "Post", "Comment", or "PrivateMessage"
-        public required string Status { get; set; } // "Pending", "Reviewed", or "Resolved"
+        public ReportType ReportedType { get; set; } // "Post", "Comment", "User", or "PrivateMessage"
+        public Status Status { get; set; } // "Pending", "UnderReview", or "Resolved"
     }
 }

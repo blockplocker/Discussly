@@ -1,4 +1,5 @@
-﻿namespace Discussly.Models
+﻿
+namespace Discussly.Models
 {
     public class Comment
     {
@@ -10,6 +11,6 @@
         public int Downvotes { get; set; }
         public required string UserId { get; set; }
         public required int ParentId { get; set; }
-        public required string ParentType { get; set; } // "Post" or "Comment"
+        public CommentType ParentType { get; set; } // "Post" or "Comment"
     }
 }
