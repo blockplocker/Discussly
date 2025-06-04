@@ -1,0 +1,80 @@
+﻿@page
+@model Discussly.Pages.Admin.PostAdmin.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Post.Id" />
+            <div class="form-group">
+                <label asp-for="Post.Title" class="control-label"></label>
+                <input asp-for="Post.Title" class="form-control" />
+                <span asp-validation-for="Post.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Content" class="control-label"></label>
+                <input asp-for="Post.Content" class="form-control" />
+                <span asp-validation-for="Post.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.ImageUrl" class="control-label"></label>
+                <input asp-for="Post.ImageUrl" class="form-control" />
+                <span asp-validation-for="Post.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.CreatedAt" class="control-label"></label>
+                <input asp-for="Post.CreatedAt" class="form-control" />
+                <span asp-validation-for="Post.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.UpdatedAt" class="control-label"></label>
+                <input asp-for="Post.UpdatedAt" class="form-control" />
+                <span asp-validation-for="Post.UpdatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Upvotes" class="control-label"></label>
+                <input asp-for="Post.Upvotes" class="form-control" />
+                <span asp-validation-for="Post.Upvotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Downvotes" class="control-label"></label>
+                <input asp-for="Post.Downvotes" class="form-control" />
+                <span asp-validation-for="Post.Downvotes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.CommentsCount" class="control-label"></label>
+                <input asp-for="Post.CommentsCount" class="form-control" />
+                <span asp-validation-for="Post.CommentsCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.UserId" class="control-label"></label>
+                <input asp-for="Post.UserId" class="form-control" />
+                <span asp-validation-for="Post.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.CategoryId" class="control-label"></label>
+                <input asp-for="Post.CategoryId" class="form-control" />
+                <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

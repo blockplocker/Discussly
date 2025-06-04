@@ -8,8 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Discussly.Models;
 using Discussly.Areas.Identity.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Discussly.Pages.Admin.CategoryAdmin
+namespace Discussly.Pages.Admin.PostAdmin
 {
     public class CreateModel : PageModel
     {
@@ -27,36 +28,45 @@ namespace Discussly.Pages.Admin.CategoryAdmin
             _userManager = userManager;
         }
 
-        public IActionResult OnGet()
+        public List<SelectListItem> CategoryOptions { get; set; } = new();
+
+        public async Task<IActionResult> OnGetAsync()
         {
+            var categories = await _httpClient.GetFromJsonAsync<List<Category>>($"{_apiBaseUrl}/api/categories");
+            CategoryOptions = categories?
+                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
+                .ToList() ?? new List<SelectListItem>();
+
             return Page();
         }
 
         [BindProperty]
-        public CategoryInputViewModel Input { get; set; } = new();
+        public PostInputViewModel Input { get; set; } = new();
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            // Map ViewModel to Entity
-            var category = new Category
+            var Post = new Post
             {
-                Name = Input.Name,
-                Description = Input.Description,
+                Title = Input.Title,
+                Content = Input.Content,
+                ImageUrl = Input.ImageUrl,
+                CategoryId = Input.CategoryId,
                 UserId = _userManager.GetUserId(User) ?? string.Empty,
                 CreatedAt = DateTime.Now,
-                PostsCount = 0
+                UpdatedAt = DateTime.Now,
+                Upvotes = 0,
+                Downvotes = 0,
+                CommentsCount = 0,
             };
 
-            var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}/api/categories", category);
+            var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}/api/posts", Post);
 
             if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError(string.Empty, "Failed to create category via API.");
+                ModelState.AddModelError(string.Empty, "Failed to create post via API.");
                 return Page();
             }
 
