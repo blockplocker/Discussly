@@ -1,0 +1,19 @@
+﻿@page "{parentType}/{parentId:int}"
+@model Discussly.Pages.CreateCommentModel
+
+@{
+    ViewData["Title"] = "Create Comment";
+}
+
+<h1>Create Comment</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Input.Content" class="control-label"></label>
+        <input asp-for="Input.Content" class="form-control" />
+        <span asp-validation-for="Input.Content" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="Input.ParentType" />
+    <input type="hidden" asp-for="Input.ParentId" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

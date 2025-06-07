@@ -1,4 +1,6 @@
-﻿namespace Discussly.Models
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Discussly.Models
 {
     public class PostInputViewModel
     {

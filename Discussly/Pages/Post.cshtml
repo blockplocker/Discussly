@@ -1,0 +1,49 @@
+﻿@page "{id:int}"
+@model Discussly.Pages.PostModel
+@{
+    ViewData["Title"] = Model.Post?.Title ?? "Post";
+}
+
+<div class="container py-5">
+    @if (Model.Post != null)
+    {
+        <div class="mb-4">
+            <h2>@Model.Post.Title</h2>
+            <div class="text-muted small mb-2">@Model.Post.CreatedAt.ToString("g")</div>
+            <div>@Model.Post.Content</div>
+            <div class="mt-5">
+                @if (User.Identity.IsAuthenticated)
+                {
+                <p>Login to comment</p>
+                <a asp-page="/CreateComment" asp-route-parentType="Post" asp-route-parentId="@Model.Post.Id" class="btn btn-sm btn-primary">
+                    Kommentera
+                </a>
+                }
+                else
+                {
+                    <a id="register" asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary me-2">Register</a>
+                    <a id="login" asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-primary">Log In</a>
+                }
+            </div>
+        </div>
+    }
+
+    <h4>Kommentarer</h4>
+    @if (Model.Comments.Any())
+    {
+        <ul class="list-group">
+            @foreach (var comment in Model.Comments)
+            {
+                <li class="list-group-item">
+                    <div class="fw-bold small">Comment #@comment.Id</div>
+                    <div>@comment.Content</div>
+                    <div class="text-muted small">@comment.CreatedAt.ToString("g")</div>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="text-muted">Inga kommentarer än.</div>
+    }
+</div>

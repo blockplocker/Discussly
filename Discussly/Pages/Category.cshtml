@@ -1,0 +1,36 @@
+﻿@page "{id:int}"
+@model Discussly.Pages.CategoryModel
+@{
+    ViewData["Title"] = Model.Category?.Name ?? "Category";
+}
+
+<div class="container py-5">
+    <h1 class="mb-3">@Model.Category?.Name</h1>
+    <p class="text-muted">@Model.Category?.Description</p>
+
+    <div class="mb-4">
+        <a asp-page="/CreatePost" asp-route-categoryId="@Model.Category?.Id" class="btn btn-primary">
+            Create Post
+        </a>
+    </div>
+
+    <div>
+        @if (Model.Posts.Any())
+        {
+            <div class="list-group">
+                @foreach (var post in Model.Posts)
+                {
+                    <a asp-page="/Post" asp-route-id="@post.Id" class="list-group-item list-group-item-action">
+                        <div class="fw-bold">@post.Title</div>
+                        <div class="mt-1">@post.Content?.Substring(0, Math.Min(100, post.Content.Length))...</div>
+                        <div class="text-muted small">@post.CreatedAt.ToString("g")</div>
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">No posts in this category yet.</div>
+        }
+    </div>
+</div>
