@@ -8,7 +8,17 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+            @{
+                var user = await UserManager.GetUserAsync(User);
+                var fileName = user?.ProfilePic;
+                var profilePicPath = string.IsNullOrEmpty(fileName)
+                    ? Url.Content("~/UserProfilePicture/NoProfilePic.png")
+                    : Url.Content("~/UserProfilePicture/" + fileName);
+            }
+            <img src="@profilePicPath" alt="Profile Picture" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;" />
+             @user?.Name
+        </a>
     </li>
     <li class="nav-item">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
