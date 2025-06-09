@@ -6,7 +6,10 @@
 }
 
 <h1>Index</h1>
-
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -14,34 +17,34 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Comment[0].Content)
+                @Html.DisplayNameFor(model => model.Comments[0].Content)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment[0].CreatedAt)
+                @Html.DisplayNameFor(model => model.Comments[0].CreatedAt)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment[0].UpdatedAt)
+                @Html.DisplayNameFor(model => model.Comments[0].UpdatedAt)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment[0].Upvotes)
+                @Html.DisplayNameFor(model => model.Comments[0].Upvotes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment[0].Downvotes)
+                @Html.DisplayNameFor(model => model.Comments[0].Downvotes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment[0].UserId)
+                @Html.DisplayNameFor(model => model.Comments[0].UserId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment[0].ParentId)
+                @Html.DisplayNameFor(model => model.Comments[0].ParentId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment[0].ParentType)
+                @Html.DisplayNameFor(model => model.Comments[0].ParentType)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Comment) {
+@foreach (var item in Model.Comments) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Content)

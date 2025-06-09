@@ -23,7 +23,6 @@ namespace Discussly.Pages
 
         public async Task OnGetAsync()
         {
-            //Categories = await _httpClient.GetFromJsonAsync<List<Category>>($"{_apiBaseUrl}/api/categories") ?? new List<Category>();
             try
             {
                 var response = await _httpClient.GetAsync($"{_apiBaseUrl}/api/categories");

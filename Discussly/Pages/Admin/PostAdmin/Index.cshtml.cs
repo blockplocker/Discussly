@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Discussly.Data;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Discussly.Models;
 
 namespace Discussly.Pages.Admin.PostAdmin
@@ -21,11 +14,30 @@ namespace Discussly.Pages.Admin.PostAdmin
             _apiBaseUrl = configuration["ApiSettings:BaseUrl"] ?? throw new ArgumentNullException(nameof(configuration), "ApiSettings:BaseUrl configuration is missing.");
         }
 
-        public IList<Post> Post { get; set; } = new List<Post>();
-
+        public IList<Post> Posts { get; set; } = new List<Post>();
+        public string? ErrorMessage { get; set; }
         public async Task OnGetAsync()
         {
-            Post = await _httpClient.GetFromJsonAsync<List<Post>>($"{_apiBaseUrl}/api/posts") ?? new List<Post>();
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_apiBaseUrl}/api/Posts");
+                if (response.IsSuccessStatusCode)
+                {
+                    var posts = await response.Content.ReadFromJsonAsync<List<Post>>();
+                    if (posts != null)
+                    {
+                        Posts = posts;
+                    }
+                }
+                else
+                {
+                    ErrorMessage = "Failed to load Posts from the API.";
+                }
+            }
+            catch
+            {
+                ErrorMessage = "An error occurred while loading Posts.";
+            }
         }
     }
 }

@@ -14,12 +14,24 @@ namespace Discussly
             builder.Services.AddDbContext<DiscusslyContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddDefaultIdentity<DiscusslyUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DiscusslyContext>();
 
             builder.Services.AddHttpClient();
 
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SuperAdmin", Policy => Policy.RequireRole("SuperAdmin"));
+                options.AddPolicy("Admin", Policy => Policy.RequireRole("Admin"));
+            });
+
             // Add services to the container.
-            builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Admin", "Admin");
+                options.Conventions.AuthorizeFolder("/Admin/RoleAdmin", "SuperAdmin");
+            });
 
             var app = builder.Build();
 
@@ -36,6 +48,7 @@ namespace Discussly
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages();

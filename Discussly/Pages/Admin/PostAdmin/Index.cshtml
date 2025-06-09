@@ -6,7 +6,10 @@
 }
 
 <h1>Index</h1>
-
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -14,40 +17,40 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].Title)
+                @Html.DisplayNameFor(model => model.Posts[0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].Content)
+                @Html.DisplayNameFor(model => model.Posts[0].Content)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].ImageUrl)
+                @Html.DisplayNameFor(model => model.Posts[0].ImageUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].CreatedAt)
+                @Html.DisplayNameFor(model => model.Posts[0].CreatedAt)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].UpdatedAt)
+                @Html.DisplayNameFor(model => model.Posts[0].UpdatedAt)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].Upvotes)
+                @Html.DisplayNameFor(model => model.Posts[0].Upvotes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].Downvotes)
+                @Html.DisplayNameFor(model => model.Posts[0].Downvotes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].CommentsCount)
+                @Html.DisplayNameFor(model => model.Posts[0].CommentsCount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].UserId)
+                @Html.DisplayNameFor(model => model.Posts[0].UserId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].CategoryId)
+                @Html.DisplayNameFor(model => model.Posts[0].CategoryId)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Post) {
+@foreach (var item in Model.Posts) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)

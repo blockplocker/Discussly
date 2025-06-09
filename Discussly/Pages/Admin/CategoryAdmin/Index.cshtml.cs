@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Discussly.Models;
 
 namespace Discussly.Pages.Admin.CategoryAdmin

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Discussly.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Discussly.Data;
-using Discussly.Models;
+
 
 namespace Discussly.Pages.Admin.CommentAdmin
 {
@@ -22,11 +16,30 @@ namespace Discussly.Pages.Admin.CommentAdmin
         }
 
 
-        public IList<Comment> Comment { get;set; } = default!;
-
+        public IList<Comment> Comments { get;set; } = new List<Comment>();
+        public string? ErrorMessage { get; set; }
         public async Task OnGetAsync()
         {
-            Comment = await _httpClient.GetFromJsonAsync<List<Comment>>($"{_apiBaseUrl}/api/comments") ?? new List<Comment>();
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_apiBaseUrl}/api/Comments");
+                if (response.IsSuccessStatusCode)
+                {
+                    var comments = await response.Content.ReadFromJsonAsync<List<Comment>>();
+                    if (comments != null)
+                    {
+                        Comments = comments;
+                    }
+                }
+                else
+                {
+                    ErrorMessage = "Failed to load Comments from the API.";
+                }
+            }
+            catch
+            {
+                ErrorMessage = "An error occurred while loading Comments.";
+            }
         }
     }
 }
