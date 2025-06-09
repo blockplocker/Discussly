@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Discussly.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
+using Microsoft.AspNetCore.Identity;
+using Discussly.Areas.Identity.Data;
 
 namespace Discussly.Pages
 {
@@ -10,15 +12,21 @@ namespace Discussly.Pages
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiBaseUrl;
+        private readonly UserManager<DiscusslyUser> _userManager;
 
-        public PostModel(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public PostModel(
+            IHttpClientFactory httpClientFactory,
+            IConfiguration configuration,
+            UserManager<DiscusslyUser> userManager)
         {
             _httpClient = httpClientFactory.CreateClient();
             _apiBaseUrl = configuration["ApiSettings:BaseUrl"] ?? throw new ArgumentNullException(nameof(configuration), "ApiSettings:BaseUrl configuration is missing.");
+            _userManager = userManager;
         }
 
         public Post? Post { get; set; }
         public List<Comment> Comments { get; set; } = new();
+        public Dictionary<string, (string Name, string? ProfilePic)> UserInfos { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -35,6 +43,27 @@ namespace Discussly.Pages
                 .Where(c => c.ParentType == CommentType.Post && c.ParentId == id)
                 .OrderBy(c => c.CreatedAt)
                 .ToList();
+
+            // Collect all unique user IDs (post + comments)
+            var userIds = new HashSet<string> { Post.UserId };
+            foreach (var comment in Comments)
+            {
+                userIds.Add(comment.UserId);
+            }
+
+            // Fetch user info for each userId
+            foreach (var userId in userIds)
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    UserInfos[userId] = (user.Name, user.ProfilePic);
+                }
+                else
+                {
+                    UserInfos[userId] = ("Unknown", "NoProfilePic.png");
+                }
+            }
 
             return Page();
         }
