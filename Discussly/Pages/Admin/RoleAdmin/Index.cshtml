@@ -1,44 +1,44 @@
-﻿@page
-@model Discussly.Pages.Admin.RoleAdmin.IndexModel
-@{
-}
+﻿@page  
+@model Discussly.Pages.Admin.RoleAdmin.IndexModel  
+@{  
+}  
 
-@if (Model.IsSuperAdmin | Model.IsAdmin)
-{
-    <table class="table table-striped">
-        <tr>
-            <th>Username</th>
-            @foreach (var role in Model.Roles)
-            {
-                <th>@role.Name</th>
-            }
-        </tr>
-        @foreach (var user in Model.Users)
-        {
-            <tr>
-                <td>@user.UserName</td>
-                @foreach (var role in Model.Roles)
-                {
-                    if (await Model._userManager.IsInRoleAsync(user, role.Name))
-                    {
-                        <td><a href="?RemoveUserId=@user.Id&RoleName=@role.Name">Yes</a></td>
-                    }
-                    else
-                    {
-                        <td><a href="?AddUserId=@user.Id&RoleName=@role.Name">No</a></td>
-                    }
-                }
-            </tr>
-        }
-    </table>
-}
+@if (Model.IsSuperAdmin | Model.IsAdmin)  
+{  
+    <table class="table table-striped">  
+        <tr>  
+            <th>Username</th>  
+            @foreach (var role in Model.Roles)  
+            {  
+                <th>@role.Name</th>  
+            }  
+        </tr>  
+        @foreach (var user in Model.Users)  
+        {  
+            <tr>  
+                <td>@user.UserName</td>  
+                @foreach (var role in Model.Roles)  
+                {  
+                    if (role?.Name != null && await Model._userManager.IsInRoleAsync(user, role.Name))  
+                    {  
+                        <td><a href="?RemoveUserId=@user.Id&RoleName=@role.Name">Yes</a></td>  
+                    }  
+                    else if (role?.Name != null)  
+                    {  
+                        <td><a href="?AddUserId=@user.Id&RoleName=@role.Name">No</a></td>  
+                    }  
+                }  
+            </tr>  
+        }  
+    </table>  
+}  
 
-@if (Model.IsSuperAdmin)
-{
-    <form method="post">
-        <label asp-for="RoleName"></label>
-        <input asp-for="RoleName" />
+@if (Model.IsSuperAdmin)  
+{  
+    <form method="post">  
+        <label asp-for="RoleName"></label>  
+        <input asp-for="RoleName" />  
 
-        <button type="submit" class="btn btn-primary">Create Role</button>
-    </form>
+        <button type="submit" class="btn btn-primary">Create Role</button>  
+    </form>  
 }

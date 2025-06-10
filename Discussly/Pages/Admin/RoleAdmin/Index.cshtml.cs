@@ -10,23 +10,24 @@ namespace Discussly.Pages.Admin.RoleAdmin
     [Authorize(Roles = "SuperAdmin")]
     public class IndexModel : PageModel
     {
-        public List<DiscusslyUser> Users { get; set; }
-        public List<IdentityRole> Roles { get; set; }
+        public List<DiscusslyUser> Users { get; set; } = new List<DiscusslyUser>();
+        public List<IdentityRole> Roles { get; set; } = new List<IdentityRole>();
 
         [BindProperty(SupportsGet = true)]
-        public string RoleName { get; set; }
+        public string RoleName { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string AddUserId { get; set; }
+        public string AddUserId { get; set; } = string.Empty;
+
         [BindProperty(SupportsGet = true)]
-        public string RemoveUserId { get; set; }
+        public string RemoveUserId { get; set; } = string.Empty;
+
         public bool IsAdmin { get; set; }
         public bool IsSuperAdmin { get; set; }
 
-
-
         public UserManager<DiscusslyUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
+
         public IndexModel(RoleManager<IdentityRole> roleManager, UserManager<DiscusslyUser> userManager)
         {
             _roleManager = roleManager;
@@ -41,12 +42,18 @@ namespace Discussly.Pages.Admin.RoleAdmin
             if (AddUserId != null)
             {
                 var alterUser = await _userManager.FindByIdAsync(AddUserId);
-                await _userManager.AddToRoleAsync(alterUser, RoleName);
+                if (alterUser != null)
+                {
+                    await _userManager.AddToRoleAsync(alterUser, RoleName);
+                }
             }
             if (RemoveUserId != null)
             {
                 var alterUser = await _userManager.FindByIdAsync(RemoveUserId);
-                await _userManager.RemoveFromRoleAsync(alterUser, RoleName);
+                if (alterUser != null)
+                {
+                    await _userManager.RemoveFromRoleAsync(alterUser, RoleName);
+                }
             }
 
             var currentUser = await _userManager.GetUserAsync(User);
@@ -66,6 +73,7 @@ namespace Discussly.Pages.Admin.RoleAdmin
 
             return RedirectToPage("Index");
         }
+
         public async Task CreateRole(string roleName)
         {
             bool roleExists = await _roleManager.RoleExistsAsync(roleName);
