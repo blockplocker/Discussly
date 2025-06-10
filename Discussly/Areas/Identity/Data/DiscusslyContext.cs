@@ -13,6 +13,8 @@ public class DiscusslyContext : IdentityDbContext<DiscusslyUser>
     {
     }
 
+    public DbSet<Report> Reports { get; set; } = default!;
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

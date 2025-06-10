@@ -1,0 +1,87 @@
+﻿@page
+@model Discussly.Pages.Admin.ReportsAdmin.IndexModel
+@{
+    ViewData["Title"] = "Reports Admin";
+}
+
+<h1>Reports</h1>
+
+@if (!Model.Reports.Any())
+{
+    <p>No reports found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Reason</th>
+                <th>Reported Content</th>
+                <th>User</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Reports)
+            {
+                var profilePicPath = string.IsNullOrEmpty(item.ProfilePic)
+                ? Url.Content("~/UserProfilePicture/NoProfilePic.png")
+                : Url.Content("~/UserProfilePicture/" + item.ProfilePic);
+
+                <tr>
+                    <td>@item.Report.Reason</td>
+                    <td>
+                        @if (item.Report.ReportedType == Discussly.Models.ReportType.Post && item.Post != null)
+                        {
+                            <div>
+                                <strong>@item.Post.Title</strong>
+                                <div>@item.Post.Content</div>
+                                <div class="text-muted small">@item.Post.CreatedAt.ToString("g")</div>
+                            </div>
+                        }
+                        else if (item.Report.ReportedType == Discussly.Models.ReportType.Comment && item.Comment != null)
+                        {
+                            <div>
+                                <div>@item.Comment.Content</div>
+                                <div class="text-muted small">@item.Comment.CreatedAt.ToString("g")</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Content not found</span>
+                        }
+                    </td>
+                    <td>
+                        <img src="@profilePicPath" alt="Profile Picture" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;" />
+                        <span class="fw-bold">@item.UserName</span>
+                    </td>
+                    <td>@item.Report.Status</td>
+                    <td>@item.Report.CreatedAt</td>
+                    <td>
+                        @if (item.Report.ReportedType == Discussly.Models.ReportType.Post || item.Report.ReportedType == Discussly.Models.ReportType.Comment)
+                        {
+                            <form method="post" asp-page-handler="Delete" class="d-inline">
+                                <input type="hidden" name="reportId" value="@item.Report.Id" />
+                                <input type="hidden" name="reportedId" value="@item.Report.ReportedId" />
+                                <input type="hidden" name="reportedType" value="@item.Report.ReportedType" />
+                                <button type="submit" class="btn btn-danger btn-sm">Delete @item.Report.ReportedType</button>
+                            </form>
+                        }
+                        <form method="post" asp-page-handler="Edit" class="d-inline">
+                            <input type="hidden" name="reportId" value="@item.Report.Id" />
+                            <input type="hidden" name="reportedId" value="@item.Report.ReportedId" />
+                            <input type="hidden" name="reportedType" value="@item.Report.ReportedType" />
+                            <button type="submit" class="btn btn-warning btn-sm ms-1">Edit</button>
+                        </form>
+                        <form method="post" asp-page-handler="Resolve" class="d-inline">
+                            <input type="hidden" name="reportId" value="@item.Report.Id" />
+                            <button type="submit" class="btn btn-success btn-sm ms-1">Resolved</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,25 @@
+﻿@page
+@model Discussly.Pages.CreateReportModel
+@{
+    ViewData["Title"] = "Report";
+}
+
+<h2>Report @Model.ReportedType</h2>
+
+<form method="post" class="mt-4">
+    <input type="hidden" asp-for="ReportedType" />
+    <input type="hidden" asp-for="ReportedId" />
+
+    <div class="mb-3">
+        <label asp-for="Reason" class="form-label"></label>
+        <textarea asp-for="Reason" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Reason" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Submit Report</button>
+    <a asp-page="/Post" asp-route-id="@(Model.ReportedType == Discussly.Models.ReportType.Post ? Model.ReportedId : null)" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

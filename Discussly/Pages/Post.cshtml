@@ -28,16 +28,28 @@
                 <div class="text-muted small ms-3"> @Model.Post.CreatedAt.ToString("g")</div>
             </div>
 
-            <div class="mt-5">
+            <div class="mt-5 d-flex align-items-center gap-2">
                 @if (User.Identity.IsAuthenticated)
                 {
                     <a asp-page="/CreateComment" asp-route-parentType="Post" asp-route-parentId="@Model.Post.Id" class="btn btn-sm btn-primary">
                         Comment
                     </a>
+                    <a asp-page="/CreateReport"
+                       asp-route-reportedType="Post"
+                       asp-route-reportedId="@Model.Post.Id"
+                       class="btn btn-sm btn-outline-danger">
+                        Report Post
+                    </a>
+                    <a asp-page="/Admin/PostAdmin/Edit" asp-route-id="@Model.Post.Id" class="btn btn-sm btn-warning">
+                        Edit
+                    </a>
+                    <a asp-page="/Admin/PostAdmin/Delete" asp-route-id="@Model.Post.Id" class="btn btn-sm btn-danger">
+                        Delete
+                    </a>
                 }
                 else
                 {
-                    <p>Login to comment</p>
+                    <p>Login to comment or report</p>
                     <a id="register" asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary me-2">Register</a>
                     <a id="login" asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-primary">Log In</a>
                 }
@@ -65,6 +77,21 @@
                     <div class="fw-bold small">Comment #@comment.Id</div>
                     <div>@comment.Content</div>
                     <div class="text-muted small">@comment.CreatedAt.ToString("g")</div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-page="/CreateReport"
+                           asp-route-reportedType="Comment"
+                           asp-route-reportedId="@comment.Id"
+                           class="btn btn-sm btn-outline-danger mt-2">
+                            Report Comment
+                        </a>
+                        <a asp-page="/Admin/CommentAdmin/Edit" asp-route-id="@comment.Id" class="btn btn-sm btn-warning mt-2">
+                            Edit
+                        </a>
+                        <a asp-page="/Admin/CommentAdmin/Delete" asp-route-id="@comment.Id" class="btn btn-sm btn-danger mt-2">
+                            Delete
+                        </a>
+                    }
                 </li>
             }
         </ul>
