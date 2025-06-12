@@ -86,6 +86,19 @@ namespace Discussly.Pages.Admin.RoleAdmin
                 await _roleManager.CreateAsync(role);
             }
         }
+
+        public async Task<IActionResult> OnPostDeleteUserAsync(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+                return RedirectToPage();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
+            return RedirectToPage();
+        }
     }
 }
 

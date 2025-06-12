@@ -115,7 +115,7 @@ namespace Discussly.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            CanRegisterAsAdmin = true; // Determinate if you can register as an Admin
+            CanRegisterAsAdmin = false; // Determinate if you can register as an Admin
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();

@@ -14,6 +14,8 @@ public class DiscusslyContext : IdentityDbContext<DiscusslyUser>
     }
 
     public DbSet<Report> Reports { get; set; } = default!;
+    public DbSet<PrivateMessage> PrivateMessages { get; set; } = default!;
+    
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

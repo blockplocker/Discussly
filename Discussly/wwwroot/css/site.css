@@ -20,3 +20,42 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.chat-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.chat-message {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+    .chat-message.right {
+        justify-content: flex-end;
+    }
+
+.chat-bubble {
+    padding: 10px 16px;
+    border-radius: 18px;
+    max-width: 70%;
+    word-break: break-word;
+}
+
+    .chat-bubble.me {
+        background-color: #d4edda;
+        color: #155724;
+        align-self: flex-end;
+    }
+
+    .chat-bubble.other {
+        background-color: #cce5ff;
+        color: #004085;
+        align-self: flex-start;
+    }
+
+.chat-meta {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 2px;
+}

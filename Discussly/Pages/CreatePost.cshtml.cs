@@ -31,7 +31,7 @@ namespace Discussly.Pages
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> OnGetAsync(int categoryId)
+        public IActionResult OnGet(int categoryId)
         {
             Input.CategoryId = categoryId;
 

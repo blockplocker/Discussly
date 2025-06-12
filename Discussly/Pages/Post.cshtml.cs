@@ -26,7 +26,7 @@ namespace Discussly.Pages
 
         public Post? Post { get; set; }
         public List<Comment> Comments { get; set; } = new();
-        public Dictionary<string, (string Name, string? ProfilePic)> UserInfos { get; set; } = new();
+        public Dictionary<string, UserInfo> UserInfos { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -57,11 +57,11 @@ namespace Discussly.Pages
                 var user = await _userManager.FindByIdAsync(userId);
                 if (user != null)
                 {
-                    UserInfos[userId] = (user.Name, user.ProfilePic);
+                    UserInfos[userId] = new UserInfo { Name = user.Name, ProfilePic = user.ProfilePic };
                 }
                 else
                 {
-                    UserInfos[userId] = ("Unknown", "NoProfilePic.png");
+                    UserInfos[userId] = new UserInfo { Name = "Unknown", ProfilePic = "NoProfilePic.png" };
                 }
             }
 

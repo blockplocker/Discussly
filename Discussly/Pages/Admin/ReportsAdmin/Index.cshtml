@@ -26,27 +26,27 @@ else
         <tbody>
             @foreach (var item in Model.Reports)
             {
-                var profilePicPath = string.IsNullOrEmpty(item.ProfilePic)
-                ? Url.Content("~/UserProfilePicture/NoProfilePic.png")
-                : Url.Content("~/UserProfilePicture/" + item.ProfilePic);
+                var profilePicPath = string.IsNullOrEmpty(item.UserInfo?.ProfilePic)
+                    ? Url.Content("~/UserProfilePicture/NoProfilePic.png")
+                    : Url.Content("~/UserProfilePicture/" + item.UserInfo.ProfilePic);
 
                 <tr>
                     <td>@item.Report.Reason</td>
                     <td>
                         @if (item.Report.ReportedType == Discussly.Models.ReportType.Post && item.Post != null)
                         {
-                            <div>
+                            <a asp-page="/Post" asp-route-id="@item.Post.Id" class="list-group-item list-group-item-action p-2 mb-1 d-block text-decoration-none">
                                 <strong>@item.Post.Title</strong>
                                 <div>@item.Post.Content</div>
                                 <div class="text-muted small">@item.Post.CreatedAt.ToString("g")</div>
-                            </div>
+                            </a>
                         }
                         else if (item.Report.ReportedType == Discussly.Models.ReportType.Comment && item.Comment != null)
                         {
-                            <div>
+                            <a asp-page="/Post" asp-route-id="@item.Comment.ParentId" class="list-group-item list-group-item-action p-2 mb-1 d-block text-decoration-none">
                                 <div>@item.Comment.Content</div>
                                 <div class="text-muted small">@item.Comment.CreatedAt.ToString("g")</div>
-                            </div>
+                            </a>
                         }
                         else
                         {
@@ -55,7 +55,7 @@ else
                     </td>
                     <td>
                         <img src="@profilePicPath" alt="Profile Picture" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;" />
-                        <span class="fw-bold">@item.UserName</span>
+                        <span class="fw-bold">@item.UserInfo?.Name</span>
                     </td>
                     <td>@item.Report.Status</td>
                     <td>@item.Report.CreatedAt</td>

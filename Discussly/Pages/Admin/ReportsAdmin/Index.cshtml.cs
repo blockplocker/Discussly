@@ -16,8 +16,7 @@ namespace Discussly.Pages.Admin.ReportsAdmin
     public class ReportViewModel
     {
         public Report Report { get; set; } = default!;
-        public string UserName { get; set; } = string.Empty;
-        public string? ProfilePic { get; set; }
+        public UserInfo UserInfo { get; set; } = default!;
         public Post? Post { get; set; }
         public Comment? Comment { get; set; }
     }
@@ -53,11 +52,14 @@ namespace Discussly.Pages.Admin.ReportsAdmin
 
             foreach (var r in reports)
             {
+                var userInfo = users.TryGetValue(r.UserId, out var user) && user != null
+                    ? new UserInfo { Name = user.Name, ProfilePic = user.ProfilePic }
+                    : new UserInfo { Name = "Unknown", ProfilePic = "NoProfilePic.png" };
+
                 var vm = new ReportViewModel
                 {
                     Report = r,
-                    UserName = users.TryGetValue(r.UserId, out var user) ? user.Name : "Unknown",
-                    ProfilePic = users.TryGetValue(r.UserId, out var user2) ? user2.ProfilePic : null
+                    UserInfo = userInfo
                 };
 
                 // Fetch the reported post or comment from the API

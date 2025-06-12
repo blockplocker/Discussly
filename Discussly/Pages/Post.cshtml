@@ -30,12 +30,18 @@
                 {
                     <img src="@postProfilePicPath" alt="Profile Picture" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;" />
                     <span class="fw-bold ">@postUser.Name</span>
+                    @if (User.Identity?.IsAuthenticated == true && Model.Post.UserId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                    {
+                        <a asp-page="/PrivateMessage" asp-route-userId="@Model.Post.UserId" class="btn btn-sm btn-outline-success ms-2">
+                            Message
+                        </a>
+                    }
                 }
                 <div class="text-muted small ms-3"> @Model.Post.CreatedAt.ToString("g")</div>
             </div>
 
             <div class="mt-5 d-flex align-items-center gap-2">
-                @if (User.Identity.IsAuthenticated)
+                @if (User.Identity?.IsAuthenticated == true)
                 {
                     <a asp-page="/CreateComment" asp-route-parentType="Post" asp-route-parentId="@Model.Post.Id" class="btn btn-sm btn-primary">
                         Comment
@@ -82,11 +88,17 @@
                     <div class="d-flex align-items-center mb-1">
                         <img src="@commentProfilePicPath" alt="Profile Picture" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;" />
                         <span class="fw-bold">@commentUser.Name</span>
+                        @if (User.Identity?.IsAuthenticated == true && comment.UserId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                        {
+                            <a asp-page="/PrivateMessage" asp-route-userId="@comment.UserId" class="btn btn-sm btn-outline-success ms-2">
+                                Message
+                            </a>
+                        }
                     </div>
                     <div class="fw-bold small">Comment #@comment.Id</div>
                     <div>@comment.Content</div>
                     <div class="text-muted small">@comment.CreatedAt.ToString("g")</div>
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated == true)
                     {
                         <a asp-page="/CreateReport"
                            asp-route-reportedType="Comment"
