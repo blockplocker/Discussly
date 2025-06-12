@@ -1,0 +1,15 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DiscusslyContextConnection": "Server=.\\SQLEXPRESS; Database=Discussly; Trusted_Connection=True; Encrypt=false" // sql server 
+  },
+  "ApiSettings": {
+    "BaseUrl": "https://localhost:44314" // api base url
+  }
+}

@@ -28,14 +28,6 @@
             <div class="list-group">
                 @foreach (var post in Model.Posts)
                 {
-                    <a asp-page="/Post" asp-route-id="@post.Id" class="list-group-item list-group-item-action">
-                        <div class="fw-bold">@post.Title</div>
-                        <div class="mt-1">@post.Content?.Substring(0, Math.Min(100, post.Content.Length))...</div>
-                        <div class="text-muted small">@post.CreatedAt.ToString("g")</div>
-                    </a>
-                }
-                @foreach (var post in Model.Posts)
-                {
                     if (!Model.UserInfos.ContainsKey(post.UserId))
                     {
                         continue; // Skip if user info is not available
@@ -47,9 +39,17 @@
                         <div class="d-flex align-items-center mb-2">
                             <img src="@profilePicPath" alt="Profile Picture" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;" />
                             <span class="fw-bold">@userInfo.Name</span>
+                            <span class="ms-auto badge bg-secondary">@post.CommentsCount Comments</span>
+
                         </div>
                         <div class="fw-bold">@post.Title</div>
                         <div class="mt-1">@post.Content?.Substring(0, Math.Min(100, post.Content.Length))...</div>
+                        @if (!string.IsNullOrEmpty(post.ImageUrl))
+                        {
+                            <div class="my-2">
+                                <img src="@Url.Content(post.ImageUrl)" alt="Post Image" style="max-width: 80px; max-height: 80px; object-fit: cover; border-radius: 6px;" />
+                            </div>
+                        }
                         <div class="text-muted small">@post.CreatedAt.ToString("g")</div>
                     </a>
                 }

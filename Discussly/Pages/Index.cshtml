@@ -9,10 +9,10 @@
     <div class="mb-4 text-center">
         <h1 class="display-4 mb-2">Discussly</h1>
         <p class="lead text-muted">
-            Welcome to Discussly! Connect, share, and learn in our friendly community. 
+            Welcome to Discussly! Connect, share, and learn in our friendly community.
         </p>
         <p class="lead text-muted">
-            Please review our <a asp-page="/Guidelines">community guidelines</a> before posting.
+            Please review our <a asp-page="/Privacy">community guidelines</a> before posting.
         </p>
     </div>
 
@@ -25,12 +25,15 @@
         }
         else
         {
-            <a asp-page="/Discussion/Create" class="btn btn-success">Start a New Discussion</a>
+            @if (User.IsInRole("Admin") | User.IsInRole("SuperAdmin"))
+            {
+                <a asp-page="/Admin/CategoryAdmin/Create" class="btn btn-success">Start a New Discussion</a>
+            }
         }
     </div>
 
     <!-- Main Category List with Responsive Enhancements -->
-    
+
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <h1 class="display-4 mb-2">Catecories</h1>
@@ -41,11 +44,12 @@
             <div class="list-group shadow-sm">
                 @foreach (var category in Model.Categories)
                 {
-                    <a asp-page="/Category" asp-route-id="@category.Id" class="list-group-item list-group-item-action flex-column align-items-start text-decoration-none d-flex">
+                    <a asp-page="/Category" asp-route-id="@category.Id" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center text-decoration-none">
                         <div>
                             <span class="fw-bold text-primary">@Html.Encode(category.Name)</span>
                             <p class="text-muted mb-0 small">@Html.Encode(category.Description)</p>
                         </div>
+                        <span class="badge bg-secondary align-self-center">@category.PostsCount Posts</span>
                     </a>
                 }
             </div>

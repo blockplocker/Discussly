@@ -30,13 +30,15 @@ namespace Discussly.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<DiscusslyUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<DiscusslyUser> userManager,
             IUserStore<DiscusslyUser> userStore,
             SignInManager<DiscusslyUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +46,7 @@ namespace Discussly.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -100,15 +103,20 @@ namespace Discussly.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-
             [Required]
             [Display(Name = "Name")]
             public string Name { get; set; }
+
+            [Display(Name = "Register as SuperAdmin")]
+            public bool IsSuperAdmin { get; set; }
         }
 
+        public bool CanRegisterAsAdmin { get; set; } 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            CanRegisterAsAdmin = true; // Determinate if you can register as an Admin
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -132,6 +140,21 @@ namespace Discussly.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    // Assign SuperAdmin role if requested
+                    if (Input.IsSuperAdmin)
+                    {
+                        // Ensure the SuperAdmin role exists
+                        if (!await _roleManager.RoleExistsAsync("SuperAdmin"))
+                        {
+                            await _roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
+                        }
+
+                        if (!await _userManager.IsInRoleAsync(user, "SuperAdmin"))
+                        {
+                            await _userManager.AddToRoleAsync(user, "SuperAdmin");
+                        }
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

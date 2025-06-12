@@ -19,6 +19,12 @@
         <div class="mb-4">
             <h2 class="mt-4 ">@Model.Post.Title</h2>
             <div class="mb-3 fs-4 ">@Model.Post.Content</div>
+            @if (!string.IsNullOrEmpty(Model.Post.ImageUrl))
+            {
+                <div class="mb-3">
+                    <img src="@Url.Content(Model.Post.ImageUrl)" alt="Post Image" class="img-fluid rounded" style="max-height:400px;" />
+                </div>
+            }
             <div class="d-flex align-items-center mb-2">
                 @if (postUserHasInfo)
                 {
@@ -40,12 +46,15 @@
                        class="btn btn-sm btn-outline-danger">
                         Report Post
                     </a>
-                    <a asp-page="/Admin/PostAdmin/Edit" asp-route-id="@Model.Post.Id" class="btn btn-sm btn-warning">
-                        Edit
-                    </a>
-                    <a asp-page="/Admin/PostAdmin/Delete" asp-route-id="@Model.Post.Id" class="btn btn-sm btn-danger">
-                        Delete
-                    </a>
+                    @if (User.IsInRole("Admin") | User.IsInRole("SuperAdmin"))
+                    {
+                        <a asp-page="/Admin/PostAdmin/Edit" asp-route-id="@Model.Post.Id" class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+                        <a asp-page="/Admin/PostAdmin/Delete" asp-route-id="@Model.Post.Id" class="btn btn-sm btn-danger">
+                            Delete
+                        </a>
+                    }
                 }
                 else
                 {

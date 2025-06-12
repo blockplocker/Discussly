@@ -19,17 +19,17 @@ namespace Discussly
 
             builder.Services.AddHttpClient();
 
-
             builder.Services.AddAuthorization(options =>
             {
-                options.AddPolicy("SuperAdmin", Policy => Policy.RequireRole("SuperAdmin"));
-                options.AddPolicy("Admin", Policy => Policy.RequireRole("Admin"));
+                options.AddPolicy("AdminOrSuperAdmin", policy => policy.RequireRole("Admin", "SuperAdmin"));
+                options.AddPolicy("SuperAdmin", policy => policy.RequireRole("SuperAdmin"));
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
             });
 
             // Add services to the container.
             builder.Services.AddRazorPages(options =>
             {
-                options.Conventions.AuthorizeFolder("/Admin", "Admin");
+                options.Conventions.AuthorizeFolder("/Admin", "SuperAdmin");
                 options.Conventions.AuthorizeFolder("/Admin/RoleAdmin", "SuperAdmin");
             });
 
