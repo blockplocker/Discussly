@@ -1,6 +1,6 @@
 # Discussly
 
-**Discussly** is a community forum site built with **ASP.NET Razor Pages**. It allows users to join open discussions, send messages, and interact within organized categories — with robust user authentication, role-based access, and moderation tools for a safe and engaging community.
+**Discussly** is a community forum site built with **ASP.NET Razor Pages**. It allows users to join open discussions, send messages, and interact within organized categories with robust user authentication, role-based access, and moderation tools for a safe and engaging community.
 
 ---
 
